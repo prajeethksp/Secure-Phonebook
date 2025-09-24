@@ -1,0 +1,1827 @@
+{
+	"info": {
+		"_postman_id": "6eb9ea15-4b2b-4c96-8518-2110e0e7fff9",
+		"name": "Phonebook -prajeeth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30335643"
+	},
+	"item": [
+		{
+			"name": "Acceptable Inputs",
+			"item": [
+				{
+					"name": "List PhoneBook - Positive Test (Valid Token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Positive Test - Check if the API successfully lists all phone book entries\r",
+									"if (pm.response.code === 200) {\r",
+									"    pm.test(\"Status code is 200 - Successfully listed phone book entries\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"        pm.expect(pm.response.json()).to.be.an('array');\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// Handle unexpected responses\r",
+									"if (pm.response.code !== 200) {\r",
+									"    pm.test(\"Unexpected response status\", function () {\r",
+									"        pm.expect.fail(`Unexpected status code: ${pm.response.code}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{read_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/list",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - Bruce Scheneier - valid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 200 or 400\r",
+									"pm.test(\"Status code is 200 or 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 400]);\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"// If status code is 200, check the success message\r",
+									"if (pm.response.code === 200) {\r",
+									"    pm.test(\"Person added successfully\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"message\", \"Person added successfully\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// If status code is 400 and the error is 'Person already exists in the database', accept it\r",
+									"else if (pm.response.code === 400 && jsonData.detail === \"Person already exists in the database\") {\r",
+									"    pm.test(\"Person already exists - acceptable outcome\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"detail\", \"Person already exists in the database\");\r",
+									"    });\r",
+									"} else {\r",
+									"    // If it's another status code or error, fail the test\r",
+									"    pm.test(\"Unexpected response\", function () {\r",
+									"        pm.fail(`Unexpected status code ${pm.response.code} or error message: ${jsonData.detail || jsonData.message}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"Bruce Schneier\",\r\n    \"phone_number\": \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - Schneier, Bruce -valid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 200 or 400\r",
+									"pm.test(\"Status code is 200 or 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 400]);\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"// If status code is 200, check the success message\r",
+									"if (pm.response.code === 200) {\r",
+									"    pm.test(\"Person added successfully\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"message\", \"Person added successfully\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// If status code is 400 and the error is 'Person already exists in the database', accept it\r",
+									"else if (pm.response.code === 400 && jsonData.detail === \"Person already exists in the database\") {\r",
+									"    pm.test(\"Person already exists - acceptable outcome\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"detail\", \"Person already exists in the database\");\r",
+									"    });\r",
+									"} else {\r",
+									"    // If it's another status code or error, fail the test\r",
+									"    pm.test(\"Unexpected response\", function () {\r",
+									"        pm.fail(`Unexpected status code ${pm.response.code} or error message: ${jsonData.detail || jsonData.message}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"Schneier, Bruce\",\r\n    \"phone_number\": \"(703)111-2121\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - Schneier, Bruce Wayne-valid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 200 or 400\r",
+									"pm.test(\"Status code is 200 or 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 400]);\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"// If status code is 200, check the success message\r",
+									"if (pm.response.code === 200) {\r",
+									"    pm.test(\"Person added successfully\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"message\", \"Person added successfully\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// If status code is 400 and the error is 'Person already exists in the database', accept it\r",
+									"else if (pm.response.code === 400 && jsonData.detail === \"Person already exists in the database\") {\r",
+									"    pm.test(\"Person already exists - acceptable outcome\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"detail\", \"Person already exists in the database\");\r",
+									"    });\r",
+									"} else {\r",
+									"    // If it's another status code or error, fail the test\r",
+									"    pm.test(\"Unexpected response\", function () {\r",
+									"        pm.fail(`Unexpected status code ${pm.response.code} or error message: ${jsonData.detail || jsonData.message}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"Schneier, Bruce Wayne\",\r\n    \"phone_number\": \"123-1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - O’Malley, John F. - valid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 200 or 400\r",
+									"pm.test(\"Status code is 200 or 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 400]);\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"// If status code is 200, check the success message\r",
+									"if (pm.response.code === 200) {\r",
+									"    pm.test(\"Person added successfully\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"message\", \"Person added successfully\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// If status code is 400 and the error is 'Person already exists in the database', accept it\r",
+									"else if (pm.response.code === 400 && jsonData.detail === \"Person already exists in the database\") {\r",
+									"    pm.test(\"Person already exists - acceptable outcome\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"detail\", \"Person already exists in the database\");\r",
+									"    });\r",
+									"} else {\r",
+									"    // If it's another status code or error, fail the test\r",
+									"    pm.test(\"Unexpected response\", function () {\r",
+									"        pm.fail(`Unexpected status code ${pm.response.code} or error message: ${jsonData.detail || jsonData.message}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"O’Malley, John F.\",\r\n    \"phone_number\": \"+1(703)111-2121\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - John O’Malley-Smith - valid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 200 or 400\r",
+									"pm.test(\"Status code is 200 or 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 400]);\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"// If status code is 200, check the success message\r",
+									"if (pm.response.code === 200) {\r",
+									"    pm.test(\"Person added successfully\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"message\", \"Person added successfully\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// If status code is 400 and the error is 'Person already exists in the database', accept it\r",
+									"else if (pm.response.code === 400 && jsonData.detail === \"Person already exists in the database\") {\r",
+									"    pm.test(\"Person already exists - acceptable outcome\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"detail\", \"Person already exists in the database\");\r",
+									"    });\r",
+									"} else {\r",
+									"    // If it's another status code or error, fail the test\r",
+									"    pm.test(\"Unexpected response\", function () {\r",
+									"        pm.fail(`Unexpected status code ${pm.response.code} or error message: ${jsonData.detail || jsonData.message}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"John O’Malley-Smith\",\r\n    \"phone_number\": \"+32 (21) 212-2324\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - Cher -valid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 200 or 400\r",
+									"pm.test(\"Status code is 200 or 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 400]);\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"// If status code is 200, check the success message\r",
+									"if (pm.response.code === 200) {\r",
+									"    pm.test(\"Person added successfully\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"message\", \"Person added successfully\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// If status code is 400 and the error is 'Person already exists in the database', accept it\r",
+									"else if (pm.response.code === 400 && jsonData.detail === \"Person already exists in the database\") {\r",
+									"    pm.test(\"Person already exists - acceptable outcome\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"detail\", \"Person already exists in the database\");\r",
+									"    });\r",
+									"} else {\r",
+									"    // If it's another status code or error, fail the test\r",
+									"    pm.test(\"Unexpected response\", function () {\r",
+									"        pm.fail(`Unexpected status code ${pm.response.code} or error message: ${jsonData.detail || jsonData.message}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"Cher\",\r\n    \"phone_number\": \"1(703)123-1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - 011 701 111 1234  - valid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 200 or 400\r",
+									"pm.test(\"Status code is 200 or 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 400]);\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"// If status code is 200, check the success message\r",
+									"if (pm.response.code === 200) {\r",
+									"    pm.test(\"Person added successfully\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"message\", \"Person added successfully\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// If status code is 400 and the error is 'Person already exists in the database', accept it\r",
+									"else if (pm.response.code === 400 && jsonData.detail === \"Person already exists in the database\") {\r",
+									"    pm.test(\"Person already exists - acceptable outcome\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"detail\", \"Person already exists in the database\");\r",
+									"    });\r",
+									"} else {\r",
+									"    // If it's another status code or error, fail the test\r",
+									"    pm.test(\"Unexpected response\", function () {\r",
+									"        pm.fail(`Unexpected status code ${pm.response.code} or error message: ${jsonData.detail || jsonData.message}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"Adam\",\r\n    \"phone_number\": \"011 701 111 1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - 12345.12345 -valid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 200 or 400\r",
+									"pm.test(\"Status code is 200 or 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 400]);\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"// If status code is 200, check the success message\r",
+									"if (pm.response.code === 200) {\r",
+									"    pm.test(\"Person added successfully\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"message\", \"Person added successfully\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// If status code is 400 and the error is 'Person already exists in the database', accept it\r",
+									"else if (pm.response.code === 400 && jsonData.detail === \"Person already exists in the database\") {\r",
+									"    pm.test(\"Person already exists - acceptable outcome\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"detail\", \"Person already exists in the database\");\r",
+									"    });\r",
+									"} else {\r",
+									"    // If it's another status code or error, fail the test\r",
+									"    pm.test(\"Unexpected response\", function () {\r",
+									"        pm.fail(`Unexpected status code ${pm.response.code} or error message: ${jsonData.detail || jsonData.message}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"roger\",\r\n    \"phone_number\": \"12345.12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - 011 1 703 111 1234 -valid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 200 or 400\r",
+									"pm.test(\"Status code is 200 or 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 400]);\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"// If status code is 200, check the success message\r",
+									"if (pm.response.code === 200) {\r",
+									"    pm.test(\"Person added successfully\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"message\", \"Person added successfully\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// If status code is 400 and the error is 'Person already exists in the database', accept it\r",
+									"else if (pm.response.code === 400 && jsonData.detail === \"Person already exists in the database\") {\r",
+									"    pm.test(\"Person already exists - acceptable outcome\", function () {\r",
+									"        pm.expect(jsonData).to.have.property(\"detail\", \"Person already exists in the database\");\r",
+									"    });\r",
+									"} else {\r",
+									"    // If it's another status code or error, fail the test\r",
+									"    pm.test(\"Unexpected response\", function () {\r",
+									"        pm.fail(`Unexpected status code ${pm.response.code} or error message: ${jsonData.detail || jsonData.message}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"eve\",\r\n    \"phone_number\": \"011 1 703 111 1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Person by Name - Positive Test -valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Positive Test - Check if the API successfully deletes a person by name\r",
+									"if (pm.response.code === 200) {\r",
+									"    pm.test(\"Status code is 200 - Person deleted successfully by name\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"        pm.expect(pm.response.json()).to.have.property(\"message\", \"Person deleted successfully\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// Handle unexpected responses\r",
+									"if (pm.response.code !== 200) {\r",
+									"    pm.test(\"Unexpected response status\", function () {\r",
+									"        pm.expect.fail(`Unexpected status code: ${pm.response.code}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/deleteByName?full_name=Bruce%20Schneier",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"deleteByName"
+							],
+							"query": [
+								{
+									"key": "full_name",
+									"value": "Bruce%20Schneier"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Person by Number - Positive Test -valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Positive Test - Check if the API successfully deletes a person by phone number\r",
+									"if (pm.response.code === 200) {\r",
+									"    pm.test(\"Status code is 200 - Person deleted successfully by number\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"        pm.expect(pm.response.json()).to.have.property(\"message\", \"Person deleted successfully\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// Handle 'person not found' (404) as a valid response\r",
+									"if (pm.response.code === 404) {\r",
+									"    pm.test(\"Status code is 404 - Person not found but considered as pass\", function () {\r",
+									"        pm.response.to.have.status(404);\r",
+									"        pm.expect(pm.response.json()).to.have.property(\"detail\", \"Person not found in the database\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// Handle unexpected responses\r",
+									"if (pm.response.code !== 200 && pm.response.code !== 404) {\r",
+									"    pm.test(\"Unexpected response status\", function () {\r",
+									"        pm.test(`Unexpected status code: ${pm.response.code}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/deleteByNumber?phone_number=(703)111-2121",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"deleteByNumber"
+							],
+							"query": [
+								{
+									"key": "phone_number",
+									"value": "(703)111-2121"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TokenCheck-valid",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "write_user",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "write_password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/token",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Phonebook_audit logs-valid",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "write_user",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "write_password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/PhoneBook/auditLogs",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"PhoneBook",
+								"auditLogs"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Unacceptable inputs",
+			"item": [
+				{
+					"name": "Post request with read token - invalid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{read_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"Bruce Schneier\",\r\n    \"phone_number\": \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - Ron O’’Henry - Invalid Name",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 400 or 422\r",
+									"pm.test(\"Status code is 400 or 422 - Invalid input\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 422]);\r",
+									"});\r",
+									"\r",
+									"// Check that the response body contains the expected error message\r",
+									"pm.test(\"Response body contains invalid name error message\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"detail\", \"Invalid name format. Please use a valid name format.\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"Ron O’’Henry\",\r\n    \"phone_number\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - Ron O’Henry-Smith-Barnes-invalid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 400 or 422\r",
+									"pm.test(\"Status code is 400 or 422 - Invalid input\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 422]);\r",
+									"});\r",
+									"\r",
+									"// Check that the response body contains the expected error message\r",
+									"pm.test(\"Response body contains invalid name error message\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"detail\", \"Invalid name format. Please use a valid name format.\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"Ron O’Henry-Smith-Barnes\",\r\n    \"phone_number\": \"1/703/123/1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - L33t Hacker-invalid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 400 or 422\r",
+									"pm.test(\"Status code is 400 or 422 - Invalid input\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 422]);\r",
+									"});\r",
+									"\r",
+									"// Check that the response body contains the expected error message\r",
+									"pm.test(\"Response body contains invalid name error message\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"detail\", \"Invalid name format. Please use a valid name format.\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"L33t Hacker\",\r\n    \"phone_number\": \"Nr 102-123-1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - <Script>alert(“XSS”)</Script> - invalid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 400 or 422\r",
+									"pm.test(\"Status code is 400 or 422 - Invalid input\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 422]);\r",
+									"});\r",
+									"\r",
+									"// Check that the response body contains the expected error message\r",
+									"pm.test(\"Response body contains invalid name error message\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"detail\", \"Invalid name format. Please use a valid name format.\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"<Script>alert(“XSS”)</Script>\",\r\n    \"phone_number\": \"<script>alert(“XSS”)</script>\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - Brad Everett Samuel Smith - invalid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Positive Test - Check if the API successfully added the person when given valid inputs\r",
+									"if (pm.response.code === 200) {\r",
+									"    pm.test(\"Status code is 200 - Person added successfully\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"        pm.expect(pm.response.json()).to.have.property(\"message\", \"Person added successfully\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// Negative Tests\r",
+									"if (pm.response.code === 400) {\r",
+									"    pm.test(\"Status code is 400 - Check error for invalid input\", function () {\r",
+									"        pm.response.to.have.status(400);\r",
+									"\r",
+									"        let responseJson = pm.response.json();\r",
+									"\r",
+									"        // Check if error message corresponds to an invalid name\r",
+									"        if (responseJson.detail === \"Invalid name format. Please use a valid name format.\") {\r",
+									"            pm.expect(responseJson).to.have.property(\"detail\", \"Invalid name format. Please use a valid name format.\");\r",
+									"        }\r",
+									"\r",
+									"        // Check if error message corresponds to an invalid phone number\r",
+									"        else if (responseJson.detail === \"Invalid phone number format. Please use a valid phone number format.\") {\r",
+									"            pm.expect(responseJson).to.have.property(\"detail\", \"Invalid phone number format. Please use a valid phone number format.\");\r",
+									"        }\r",
+									"\r",
+									"        // Check if error message corresponds to a duplicate entry\r",
+									"        else if (responseJson.detail === \"Person already exists\") {\r",
+									"            pm.expect(responseJson).to.have.property(\"detail\", \"Person already exists\");\r",
+									"        }\r",
+									"\r",
+									"        // General error if the response detail is not one of the above\r",
+									"        else {\r",
+									"            pm.test(\"Unexpected error message received\", function () {\r",
+									"                pm.expect(responseJson).to.have.property(\"detail\");\r",
+									"            });\r",
+									"        }\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// Handle unexpected responses\r",
+									"if (pm.response.code !== 200 && pm.response.code !== 400) {\r",
+									"    pm.test(\"Unexpected response status\", function () {\r",
+									"        pm.fail(`Unexpected status code: ${pm.response.code}`);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"Brad Everett Samuel Smith\",\r\n    \"phone_number\": \"7031111234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - select * from users; -invalid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 400 or 422\r",
+									"pm.test(\"Status code is 400 or 422 - Invalid input\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 422]);\r",
+									"});\r",
+									"\r",
+									"// Check that the response body contains the expected error message\r",
+									"pm.test(\"Response body contains invalid name error message\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"detail\", \"Invalid name format. Please use a valid name format.\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"select * from users;\",\r\n    \"phone_number\": \"+1234 (201) 123-1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - (001) 123-1234 - invalid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 400 or 422\r",
+									"pm.test(\"Status code is 400 or 422 - Invalid input\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 422]);\r",
+									"});\r",
+									"\r",
+									"// Check that the response body contains the expected error message\r",
+									"pm.test(\"Response body contains invalid name error message\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"detail\", \"Invalid name format. Please use a valid name format.\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"adam\",\r\n    \"phone_number\": \"(001) 123-1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - +01 (703) 123-1234 - invalid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 400 or 422\r",
+									"pm.test(\"Status code is 400 or 422 - Invalid input\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 422]);\r",
+									"});\r",
+									"\r",
+									"// Check that the response body contains the expected error message\r",
+									"pm.test(\"Response body contains invalid name error message\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"detail\", \"Invalid name format. Please use a valid name format.\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"steve\",\r\n    \"phone_number\": \"+01 (703) 123-1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Person - (703) 123-1234 ext 204 - invalid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check that the response status code is 400 or 422\r",
+									"pm.test(\"Status code is 400 or 422 - Invalid input\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 422]);\r",
+									"});\r",
+									"\r",
+									"// Check that the response body contains the expected error message\r",
+									"pm.test(\"Response body contains invalid name error message\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"detail\", \"Invalid name format. Please use a valid name format.\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{write_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"eve\",\r\n    \"phone_number\": \"(703) 123-1234 ext 204\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/PhoneBook/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"PhoneBook",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "write_token",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"// Function to fetch a token\r",
+					"function fetchToken(username, password, variableName) {\r",
+					"    pm.sendRequest({\r",
+					"        url: pm.environment.get(\"base_url\") + \"/token\",\r",
+					"        method: 'POST',\r",
+					"        header: {\r",
+					"            'Content-Type': 'application/x-www-form-urlencoded'\r",
+					"        },\r",
+					"        body: {\r",
+					"            mode: 'urlencoded',\r",
+					"            urlencoded: [\r",
+					"                { key: 'username', value: username },\r",
+					"                { key: 'password', value: password }\r",
+					"            ]\r",
+					"        }\r",
+					"    }, function (err, res) {\r",
+					"        if (err) {\r",
+					"            console.error(err);\r",
+					"        } else {\r",
+					"            if (res.code === 200) {\r",
+					"                var jsonResponse = res.json();\r",
+					"                pm.environment.set(variableName, jsonResponse.access_token);\r",
+					"            } else {\r",
+					"                console.error('Failed to fetch token for ' + username);\r",
+					"            }\r",
+					"        }\r",
+					"    });\r",
+					"}\r",
+					"\r",
+					"// Fetch write_token\r",
+					"fetchToken('write_user', 'write_password', 'write_token');\r",
+					"\r",
+					"// Fetch read_token\r",
+					"fetchToken('read_user', 'read_password', 'read_token');\r",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "write_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "read_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
